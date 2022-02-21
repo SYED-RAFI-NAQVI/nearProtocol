@@ -22,9 +22,10 @@ import SearchIcon from "@mui/icons-material/Search";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Slider from "@mui/material/Slider";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+import CircularProgress from "@mui/material/CircularProgress";
 
-import Explore from "./Explore";
+import Modal from "@mui/material/Modal";
 
 import getConfig from "../config";
 const { networkId } = getConfig(process.env.NODE_ENV || "development");
@@ -40,9 +41,9 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 700,
-  height: 400,
-  backgroundColor: "rgb(13, 11, 38)",
+  width: 400,
+  height: 200,
+  bgcolor: "background.paper",
   border: "none",
   boxShadow: 24,
   p: 4,
@@ -62,8 +63,12 @@ export default function Create() {
   const [bundleSymbol, setBundleSymbol] = useState("");
   const [explore, setExplore] = useState(false);
   const [coinsData, setCoinsData] = useState([]);
+  const [createLoader, setCretateLoader] = useState(false);
+  const [successModal, setSuccessModal] = useState(false);
   const totalPercentage = 100;
   let list = [];
+
+  const handleSuccesssClose = () => setSuccessModal(false);
 
   let navigate = useNavigate();
 
@@ -106,6 +111,7 @@ export default function Create() {
 
   const handleCreate = (e) => {
     stepCount <= 1 && setStepCount(stepCount + 1);
+    setCretateLoader(true);
     axios
       .post("http://localhost:3000/mint_nft", {
         token_id: bundleName,
@@ -170,6 +176,8 @@ export default function Create() {
                       .then((res) => console.log(res));
                   }
                 });
+              setCretateLoader(false);
+              setSuccessModal(true);
             }
           })
       );
@@ -348,6 +356,7 @@ export default function Create() {
                     label="Name"
                     placeholder="Bundle Name"
                     onChange={(e) => setBundleName(e.target.value)}
+                    vaule={bundleName}
                   />
                   <TextField
                     fullWidth
@@ -355,6 +364,7 @@ export default function Create() {
                     placeholder="Bundle Symbol"
                     style={{ marginTop: "0.6rem" }}
                     onChange={(e) => setBundleSymbol(e.target.value)}
+                    vaule={bundleSymbol}
                   />
                   {/* <Autocomplete
                         style={{ marginTop: "0.6rem" }}
@@ -429,6 +439,60 @@ export default function Create() {
                 </Grid>
               </Grid>
             )}
+
+            {stepCount === 2 && (
+              <Grid>
+                <Grid>
+                  <ModalTitle title="Create" />
+                </Grid>
+                <Grid>
+                  <Typography variant="h4" fontWeight={500}>
+                    {bundleName}
+                  </Typography>
+                </Grid>
+                <Grid>
+                  <Typography variant="body1" fontWeight={100}>
+                    {bundleSymbol}
+                  </Typography>
+                </Grid>
+                <Grid></Grid>
+                {percentage.length > 0 &&
+                  percentage.map((token, index) => {
+                    return (
+                      <Grid mt={1}>
+                        <Paper
+                          style={{
+                            background: "#f8f9fa",
+                            textAlign: "center",
+                          }}
+                        >
+                          <Box p={2}>
+                            <Grid
+                              style={{
+                                display: "grid",
+                                gridTemplateColumns: "1fr 1fr 1fr",
+                              }}
+                              alignItems={"center"}
+                            >
+                              <Grid textAlign={"left"}>
+                                <Typography variant="body1" fontWeight={700}>
+                                  {token.name}
+                                </Typography>
+                              </Grid>
+                              <Grid></Grid>
+                              <Grid style={{ marginLeft: "auto" }}>
+                                <Typography variant="body1" fontWeight={700}>
+                                  {token.value}%
+                                </Typography>
+                              </Grid>
+                            </Grid>
+                          </Box>
+                        </Paper>
+                      </Grid>
+                    );
+                  })}
+              </Grid>
+            )}
             <Grid
               textAlign={"center"}
               mt={5}
@@ -455,15 +519,37 @@ export default function Create() {
                   Next
                 </Button>
               )}
-              {stepCount == 2 && (
-                <Button onClick={() => handleCreate()} variant="contained">
+              {stepCount == 2 && !createLoader && (
+                <Button variant="contained" onClick={() => handleCreate()}>
                   Create
                 </Button>
               )}
+              {stepCount == 2 && createLoader && <CircularProgress />}
             </Grid>
           </Grid>
         </Paper>
       </Grid>
+      <Modal open={successModal} onClose={handleSuccesssClose}>
+        <Box sx={style}>
+          <Typography id="modal-modal-title" variant="h6" component="h2">
+            congratulations! You have created Token Basket.
+          </Typography>
+          <Button
+            style={{
+              backgroundColor: "#E07A5F",
+              padding: "10px",
+              borderRadius: "8px",
+              color: "#fff",
+              margin: "10px 12px",
+            }}
+            onClick={() => {
+              navigate("/explore");
+            }}
+          >
+            Explore
+          </Button>
+        </Box>
+      </Modal>
     </Grid>
   );
 }

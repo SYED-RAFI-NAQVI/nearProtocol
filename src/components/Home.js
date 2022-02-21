@@ -2,7 +2,7 @@ import "regenerator-runtime/runtime";
 import React from "react";
 import { login, logout } from "../utils";
 import "../global.css";
-import image from "../assets/homeimage.png";
+import image from "../assets/home.png";
 
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
@@ -43,7 +43,6 @@ export default function Home() {
   let navigate = useNavigate();
 
   console.log(location);
-
   if (!window.walletConnection.isSignedIn()) {
     return (
       <main style={{ backgroundColor: "#1f1d37" }}>
@@ -89,16 +88,19 @@ export default function Home() {
   return (
     <Grid style={{ overflow: "hidden" }}>
       <Grid display={"flex"}>
-        <Grid width={"1000px"}>
-          <img src={image} />
+        <Grid>
+          <img
+            src={image}
+            style={{ width: "1000px", marginTop: "20px", height: "800px" }}
+          />
         </Grid>
         <Container maxWidth="md">
           <Grid mt={24} textAlign={"center"}>
             <Typography
               variant="h1"
-              style={{ fontWeight: "700", color: "#3D405B", fontSize: "90px" }}
+              style={{ fontWeight: "700", color: "#3D405B", fontSize: "72px" }}
             >
-              Asset management for a{" "}
+              Invest in Token baskets with
               <span
                 style={{
                   background:
@@ -107,9 +109,10 @@ export default function Home() {
                   webkitTextFillColor: "transparent",
                   backgroundImage:
                     "linear-gradient(90deg,#E07A5F -2.16%,#F2CC8F)",
+                  paddingLeft: "16px",
                 }}
               >
-                DeFi world
+                BASKETO
               </span>
             </Typography>
           </Grid>
@@ -123,7 +126,7 @@ export default function Home() {
                 opacity: 0.5,
               }}
             >
-              Build, Invest and Monitize your Portfolio
+              A smart and hustle free way to invest in Crypto
               {/* Bring your crypto strategies to life with Set’s leading portfolio
               management tools. */}
             </Typography>
@@ -131,15 +134,16 @@ export default function Home() {
           <Grid textAlign={"center"} mt={10}>
             <Button
               style={{
-                fontSize: "32px",
+                fontSize: "22px",
                 backgroundImage:
                   "linear-gradient(90deg,#4743fb -2.16%,#c750ff)",
                 color: "white",
                 borderRadius: "100px",
-                padding: "25px",
-                minWidth: "300px",
-                marginRight: 40,
+                padding: "20px",
+                minWidth: "180px",
+                // marginRight: 40,
                 fontWeight: "bold",
+                textTransform: "none",
               }}
               endIcon={<AddCircleIcon style={{ fontSize: "36px" }} />}
               onClick={() => {
@@ -150,15 +154,16 @@ export default function Home() {
             </Button>
             <Button
               style={{
-                fontSize: "32px",
+                fontSize: "22px",
                 marginLeft: 40,
                 backgroundImage:
                   "linear-gradient(90deg,#4743fb -2.16%,#c750ff)",
                 color: "white",
                 borderRadius: "100px",
-                padding: "25px",
-                minWidth: "300px",
+                padding: "20px",
+                minWidth: "180px",
                 fontWeight: "bold",
+                textTransform: "none",
               }}
               endIcon={<ExploreIcon style={{ fontSize: "36px" }} />}
               onClick={() => {
