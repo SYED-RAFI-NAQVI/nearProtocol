@@ -44,7 +44,7 @@ Step 0: Install near-cli (optional)
 
 [near-cli] is a command line interface (CLI) for interacting with the NEAR blockchain. It was installed to the local `node_modules` folder when you ran `yarn install`, but for best ergonomics you may want to install it globally:
 
-    yarn install --global near-cli
+    yarn global add near-cli
 
 Or, if you'd rather use the locally-installed version, you can prefix all `near` commands with `npx`
 
